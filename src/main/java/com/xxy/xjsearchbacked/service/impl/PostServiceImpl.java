@@ -1,5 +1,6 @@
 package com.xxy.xjsearchbacked.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -304,6 +305,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }).collect(Collectors.toList());
         postVOPage.setRecords(postVOList);
         return postVOPage;
+    }
+
+    public List<PostVO> getPostVOBySearch(String searchText) {
+        QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title",searchText)
+                .or().like("content",searchText)
+                .or().like("tags",searchText);
+        List<Post> postList = this.baseMapper.selectList(queryWrapper);
+        return postList.stream().map(post -> BeanUtil.copyProperties(post, PostVO.class)).collect(Collectors.toList());
     }
 
 }

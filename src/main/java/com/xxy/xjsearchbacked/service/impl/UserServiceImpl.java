@@ -2,10 +2,15 @@ package com.xxy.xjsearchbacked.service.impl;
 
 import static com.xxy.xjsearchbacked.constant.UserConstant.USER_LOGIN_STATE;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xxy.xjsearchbacked.common.BaseResponse;
+import com.xxy.xjsearchbacked.common.ResultUtils;
 import com.xxy.xjsearchbacked.constant.CommonConstant;
+import com.xxy.xjsearchbacked.exception.ThrowUtils;
 import com.xxy.xjsearchbacked.mapper.UserMapper;
 import com.xxy.xjsearchbacked.model.dto.user.UserQueryRequest;
 import com.xxy.xjsearchbacked.model.enums.UserRoleEnum;
@@ -27,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 用户服务实现
@@ -244,6 +250,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return new ArrayList<>();
         }
         return userList.stream().map(this::getUserVO).collect(Collectors.toList());
+    }
+
+    public List<UserVO> getUserVOBySearch(String searchText) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("username",searchText);
+        List<User> users = this.baseMapper.selectList(queryWrapper);
+        return users.stream().map(user -> BeanUtil.copyProperties(user, UserVO.class)).collect(Collectors.toList());
     }
 
     @Override

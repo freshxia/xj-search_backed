@@ -7,6 +7,7 @@ import com.xxy.xjsearchbacked.model.dto.post.PostQueryRequest;
 import com.xxy.xjsearchbacked.model.entity.Post;
 import com.xxy.xjsearchbacked.model.vo.PostVO;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 帖子服务
@@ -57,4 +58,12 @@ public interface PostService extends IService<Post> {
      * @return
      */
     Page<PostVO> getPostVOPage(Page<Post> postPage, HttpServletRequest request);
+
+    /**
+     * 通过搜索获取帖子
+     *
+     * @param searchText 搜索文本
+     * @return {@link List}<{@link PostVO}>
+     */
+    List<PostVO> getPostVOBySearch(String searchText);
 }

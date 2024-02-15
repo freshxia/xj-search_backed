@@ -118,4 +118,13 @@ public interface UserService extends IService<User> {
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 
+    /**
+     * 通过搜索获取用户
+     *
+     * @param searchText 搜索文本
+     * @return {@link List}<{@link UserVO}>
+     */
+    List<UserVO> getUserVOBySearch(String searchText);
+
 }
+
