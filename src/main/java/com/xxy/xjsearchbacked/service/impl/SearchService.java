@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xxy.xjsearchbacked.common.ErrorCode;
 import com.xxy.xjsearchbacked.exception.BusinessException;
 import com.xxy.xjsearchbacked.model.dto.search.SearchParamsRequest;
+import com.xxy.xjsearchbacked.model.entity.Picture;
 import com.xxy.xjsearchbacked.model.enums.SearchCategoryEnum;
 import com.xxy.xjsearchbacked.model.vo.ListResponse;
 import com.xxy.xjsearchbacked.model.vo.PostVO;
@@ -29,17 +30,17 @@ public class SearchService {
     @Resource
     private PostService postService;
     public ListResponse deSearch(SearchParamsRequest searchParamsRequest) {
+        ListResponse listResponse = new ListResponse();
 //        从请求中 拿到搜索信息 和搜索分类
         String searchText = searchParamsRequest.getSearchText();
         String category = searchParamsRequest.getCategory();
         if (StrUtil.isBlank(category)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求的 category 参数 不能为空！");
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求的 category 参数 不能为空！");
+            return listResponse;
         }
-
-        ListResponse listResponse = new ListResponse();
         switch (category) {
             case "picture" :
-                List<String> pictureList = pictureService.fetchPicture(searchText);
+                List<Picture> pictureList = pictureService.fetchPicture(searchText);
                 listResponse.setPictureList(pictureList);
                 break;
             case "user" :

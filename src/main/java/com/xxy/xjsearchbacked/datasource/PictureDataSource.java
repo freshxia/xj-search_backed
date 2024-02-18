@@ -1,6 +1,9 @@
-package com.xxy.xjsearchbacked.service.impl;
+package com.xxy.xjsearchbacked.datasource;
 
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.PageUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xxy.xjsearchbacked.model.entity.Picture;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,9 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class PictureService {
-     public List<Picture> fetchPicture(String searchText) {
-         List<Picture> pictureList = new ArrayList<>();
+public class PictureDataSource implements DataSource{
+    @Override
+    public Page<Picture> doSearch(String searchText, long pageSize, long pageNum) {
+        List<Picture> pictureList = new ArrayList<>();
         try {
             Document doc = Jsoup.connect("https://www.bing.com/images/search?first=1&q=" + searchText).get();
             Elements elements = doc.getElementsByClass("imgpt");
@@ -34,7 +38,9 @@ public class PictureService {
                 IOException e) {
             throw new RuntimeException(e);
         }
-        return pictureList;
-    }
+        Page<Picture> picturePage = new Page<>(pageNum,pageSize);
+        picturePage.setRecords(pictureList);
 
+        return picturePage;
+    }
 }
