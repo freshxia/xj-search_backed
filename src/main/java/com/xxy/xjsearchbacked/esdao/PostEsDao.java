@@ -12,6 +12,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 public interface PostEsDao extends ElasticsearchRepository<PostEsDTO, Long> {
-
     List<PostEsDTO> findByUserId(Long userId);
 }

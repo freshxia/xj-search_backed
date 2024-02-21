@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xxy.xjsearchbacked.datasource.*;
 import com.xxy.xjsearchbacked.model.dto.search.SearchParamsRequest;
 import com.xxy.xjsearchbacked.model.entity.Picture;
+import com.xxy.xjsearchbacked.model.entity.Post;
 import com.xxy.xjsearchbacked.model.enums.SearchCategoryEnum;
 import com.xxy.xjsearchbacked.model.vo.ListResponse;
 import com.xxy.xjsearchbacked.model.vo.PostVO;
@@ -35,6 +36,7 @@ public class SearchFacade {
         String category = searchParamsRequest.getCategory();
         int current = searchParamsRequest.getCurrent();
         int pageSize = searchParamsRequest.getPageSize();
+        // 如果搜索类型为空，则搜索全部类型
         if (StrUtil.isBlank(category)) {
             Page<Picture> picturePage = pictureDataSource.doSearch(searchText, pageSize, current);
             Page<PostVO> postVOPage = postDataSource.doSearch(searchText, pageSize, current);
@@ -43,6 +45,7 @@ public class SearchFacade {
             listResponse.setUserList(userVOPage.getRecords());
             listResponse.setPostList(postVOPage.getRecords());
         } else {
+            //否则根据传参搜索对应类型的数据 ：适配器模式
             DataSource dataSource = dataSourceRegistry.GetDataSourceByType(category);
             Page page = dataSource.doSearch(searchText, pageSize, current);
             listResponse.setDataList(page.getRecords());

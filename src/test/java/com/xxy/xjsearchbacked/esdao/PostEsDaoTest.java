@@ -33,6 +33,7 @@ public class PostEsDaoTest {
     @Test
     void test() {
         PostQueryRequest postQueryRequest = new PostQueryRequest();
+        postQueryRequest.setSearchText("日志 java");
         com.baomidou.mybatisplus.extension.plugins.pagination.Page<Post> page =
                 postService.searchFromEs(postQueryRequest);
         System.out.println(page);
@@ -50,9 +51,9 @@ public class PostEsDaoTest {
     @Test
     void testAdd() {
         PostEsDTO postEsDTO = new PostEsDTO();
-        postEsDTO.setId(1L);
-        postEsDTO.setTitle("test");
-        postEsDTO.setContent("test");
+        postEsDTO.setId(2L);
+        postEsDTO.setTitle("关于小黑子");
+        postEsDTO.setContent("夏新宇真的不是小黑子");
         postEsDTO.setTags(Arrays.asList("java", "python"));
         postEsDTO.setThumbNum(1);
         postEsDTO.setFavourNum(1);
